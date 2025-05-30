@@ -1,0 +1,64 @@
+# list of all packages used throughout the exercises + project
+
+# s1 - development environment
+python-dotenv
+nbconvert
+torch
+torchvision
+pipreqs
+# s2 - organisation and version control
+typer
+invoke
+cookiecutter
+dvc
+dvc-gdrive
+ruff
+mypy
+# s3 - reproducibility
+hydra-core
+# s4 - debugging and logging
+pytorch-lightning
+wandb
+snakeviz
+torch_tb_profiler
+# s5 - continuous integration
+pre-commit
+pytest
+coverage
+# s6 - the cloud
+google-cloud-storage
+dvc-gs
+# s7 - deployment
+fastapi
+pydantic
+uvicorn
+requests
+httpx
+locust
+python-multipart
+# s8 - monitoring
+evidently
+prometheus-fastapi-instrumentator
+# s9 - scalable applications
+ptflops
+transformers
+datasets
+# s10 - extra
+onnx
+onnxruntime
+onnxscript
+scikit-learn
+mkdocs-material
+streamlit
+optuna
+prefect
+neural_compressor
+# other
+loguru
+Markdown
+matplotlib
+kaggle
+timm
+altair
+#--find-links https://download.pytorch.org/whl/torch_stable.html
+#torch==2.5.1+cu124

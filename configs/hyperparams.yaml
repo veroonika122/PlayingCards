@@ -1,0 +1,17 @@
+﻿wandb: 
+  project: "playing_cards"
+model: "timmresnet"
+pretrained: True
+batch_size: 1
+epochs: 2
+seed: 0
+lr: 5e-4
+gradient_accumulation_steps: 8
+
+default:
+  cnn:
+    lr: 1e-4
+  huggingresnet:
+    lr: 1e-3
+  timmresnet:
+    lr: 1e-3
