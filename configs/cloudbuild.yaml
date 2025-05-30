@@ -1,19 +1,24 @@
 steps:
+# Build the container image
 - name: 'gcr.io/cloud-builders/docker'
-  id: 'Build container image'
-  args: [
-    'build',
-    '-t',
-    'europe-west1-docker.pkg.dev/mlops-448220/mlops-artifact/train',
-    '-f',
-    'dockerfiles/train.dockerfile',
-    '.'
-  ]
+  args: ['build', '-t', 'gcr.io/playing-cards-project/train', '-f', 'dockerfiles/train.dockerfile', '.']
+
+# Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
-  id: 'Push container image'
-  args: [
-    'push',
-    'europe-west1-docker.pkg.dev/mlops-448220/mlops-artifact/train'
-  ]
-options:
-  logging: CLOUD_LOGGING_ONLY
+  args: ['push', 'gcr.io/playing-cards-project/train']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - 'run'
+  - 'deploy'
+  - 'playing-cards-service'
+  - '--image'
+  - 'gcr.io/playing-cards-project/train'
+  - '--region'
+  - 'europe-west1'
+  - '--platform'
+  - 'managed'
+
+images:
+- gcr.io/playing-cards-project/train

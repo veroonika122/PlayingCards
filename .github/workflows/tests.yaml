@@ -1,58 +1,37 @@
-name: Unit Tests
+name: "Run tests"
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   test:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        operating-system: ["macos-latest"]
         python-version: ["3.11"]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: 'pip'
-          cache-dependency-path: setup.py
-
-      - name: Install dependencies
-        run: |
-          python -m pip install -U pip setuptools wheel
-          pip install -r requirements.txt
-          pip list
-
-      - name: Ruff format
-        run: |
-          ruff format .
-
-      - name: Download Kaggle files
-        env:
-          KAGGLE_USERNAME: berkayakbulut
-          KAGGLE_KEY: 86952cf72fda508a8877018b9e5e739e
-        run: |
-          python src/project_mlops/data.py
-
-
-      - name: Run tests & coverage
-        env:
-          PYTHONPATH: /Users/runner/work/Project-MLOps/Project-MLOps/src
-          KAGGLE_USERNAME: berkayakbulut
-          KAGGLE_KEY: 86952cf72fda508a8877018b9e5e739e
-        run: |
-          pip install coverage
-          coverage run -m pytest tests/
-
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v2
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements_dev.txt
+        pip install .
+        
+    - name: Run tests
+      run: |
+        pytest tests/
+        
+    - name: Run style checks
+      run: |
+        ruff check .
+        ruff format --check .

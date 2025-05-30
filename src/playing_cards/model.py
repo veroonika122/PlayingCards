@@ -1,3 +1,10 @@
+"""
+Authors:
+    Veroonika Tamm (s250069)
+    Stiina Salumets (s250088)
+Course: 62533/62T22 Applied machine learning and big data, Spring 2025
+"""
+
 import timm
 import torch
 from torch import nn

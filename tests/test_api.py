@@ -2,6 +2,7 @@ import io
 import json
 import os
 import subprocess
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -9,7 +10,7 @@ import requests
 from fastapi.testclient import TestClient
 from PIL import Image
 
-from project_mlops.api import app
+from playing_cards.api import app
 
 client = TestClient(app)
 
@@ -17,7 +18,27 @@ client = TestClient(app)
 def test_read_root():
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "Hello from the backend!"}
+    assert response.json() == {"message": "Welcome to the Playing Cards Classification API"}
+
+
+def test_invalid_file():
+    response = client.post("/classify/", files={"file": ("filename", "invalid content")})
+    assert response.status_code == 400
+
+
+def test_valid_image():
+    # Get the absolute path to the test image
+    test_dir = Path(__file__).parent
+    test_image_path = test_dir / "images" / "kingofhearts.jpg"
+
+    # Open and prepare the image
+    with open(test_image_path, "rb") as image_file:
+        response = client.post("/classify/", files={"file": ("test.jpg", image_file, "image/jpeg")})
+
+    assert response.status_code == 200
+    result = response.json()
+    assert "prediction" in result
+    assert isinstance(result["prediction"], str)
 
 
 def test_classify_image_invalid_file():

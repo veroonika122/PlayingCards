@@ -1,26 +1,30 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "project_mlops"
+name = "playing_cards"
 version = "0.0.1"
-description = "MLOps project for the course '02476 Machine Learning Operations'"
-authors = [
-  { name = "Mustafa Berkay Akbulut", email = "bakbulut96@gmail.com" },
-  { name = "Özkan Yamaner", email = "ozkanyamaner@gmail.com" },
-  { name = "Sonny Ma", email = "son22092000@gmail.com" },
-  { name = "Veroonika Tamm", email = "veroonika.tamm@gmail.com" },
-]
-
-keywords = ["machine learning", "MLOps"]
-classifiers = [
-  "Development Status :: 3 - Alpha",
-  "Programming Language :: Python :: 3",
-]
+description = "Playing Cards Classification Project"
 readme = "README.md"
-requires-python = ">=3.8"
-dynamic = ["dependencies", "optional-dependencies"]
+authors = [
+    {name = "Veroonika Tamm", email = "s250069@dtu.dk"},
+    {name = "Stiina Salumets"}
+]
+requires-python = ">=3.11"
+keywords = ["machine learning", "image classification", "playing cards"]
+license = {text = "MIT"}
+
+[tool.setuptools]
+packages = ["playing_cards"]
+package-dir = {"" = "src"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--import-mode=importlib",
+]
+filterwarnings = ["ignore::DeprecationWarning", "ignore::UserWarning"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
@@ -30,7 +34,10 @@ dev = {file = ['requirements_dev.txt']}
 
 [tool.ruff]
 line-length = 120
-lint.select = ["I"]
+target-version = "py311"
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
 
 [tool.coverage.run]
 omit = ["tests/*"]

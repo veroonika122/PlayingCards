@@ -1,10 +1,13 @@
 import os
+from pathlib import Path
+import sys
 
 from invoke import Context, task
 
 WINDOWS = os.name == "nt"
-PROJECT_NAME = "project_mlops"
-PYTHON_VERSION = "3.10"
+PROJECT_NAME = "playing_cards"
+PYTHON_VERSION = "3.11"
+PACKAGE_NAME = "src"
 
 
 # Setup commands

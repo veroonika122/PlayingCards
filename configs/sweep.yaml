@@ -1,27 +1,27 @@
-program: src/project_mlops/train.py
+program: src/playing_cards/train.py
 name: trainingsweep
 project: playing_cards  # change this
 #entity: ozkanyamaner  # change this
-method: bayes
+method: random
 metric:
-  goal: minimize
-  name: validation_loss
+  goal: maximize
+  name: valid_accuracy
 parameters:
-  lr:
-    values: [0.001, 0.0001]
-    distribution: categorical
   batch_size:
-    values: [32, 64]
-    distribution: categorical
+    values: [8, 16, 32, 64]
   epochs:
-    values: [2, 3, 4]
-    distribution: categorical
+    value: 5
+  lr:
+    max: 0.1
+    min: 0.0001
+  model:
+    values: ["CNN", "TimmResNet", "HuggingfaceResnet"]
   seed:
-    value: 0
+    value: 42
 run_cap: 5
 
 command:
   - ${env}
-  - C:\Users\son22\Desktop\Project-MLOps\.venv\Scripts\python.exe
+  - ${interpreter}
   - ${program}
   - ${args_no_hyphens}

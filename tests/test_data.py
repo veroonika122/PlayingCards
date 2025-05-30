@@ -1,12 +1,37 @@
+import os
 import torch
-from torch.utils.data import Dataset
+import pytest
+from playing_cards.data import fetch_kaggle, normalize, playing_cards
 
-from src.project_mlops.data import fetch_kaggle, normalize, playing_cards
+
+def test_normalize():
+    # Create a sample tensor
+    x = torch.randn(10, 3, 224, 224)
+    
+    # Apply normalization
+    normalized = normalize(x)
+    
+    # Check if mean is close to 0 and std is close to 1
+    assert torch.abs(normalized.mean()) < 1e-6
+    assert torch.abs(torch.std(normalized) - 1.0) < 1e-6
 
 
-def test_playing_cards():
-    # Load datasets
-    train_set, valid_set, test_set = playing_cards()
+def test_playing_cards(tmp_path):
+    # Test with project directory
+    train_set, valid_set, test_set = playing_cards(tmp_path)
+    
+    # Check if datasets are TensorDataset
+    assert isinstance(train_set, torch.utils.data.TensorDataset)
+    assert isinstance(valid_set, torch.utils.data.TensorDataset)
+    assert isinstance(test_set, torch.utils.data.TensorDataset)
+    
+    # Check if tensors have correct shape
+    assert train_set.tensors[0].shape[1:] == (3, 224, 224)  # Image dimensions
+    assert len(train_set.tensors[1].shape) == 1  # Labels are 1D
+    
+    # Check if labels are within valid range (53 classes)
+    assert torch.all(train_set.tensors[1] >= 0)
+    assert torch.all(train_set.tensors[1] < 53)
 
     # Assert dataset sizes
     assert len(train_set) == 7624, "Train dataset size should be 7624"

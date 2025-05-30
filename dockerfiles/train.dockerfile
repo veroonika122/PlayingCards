@@ -31,9 +31,7 @@ COPY README.md README.md
 COPY pyproject.toml pyproject.toml
 COPY configs/ configs/
 COPY models/ models/
-COPY docs/ docs/
 COPY tasks.py tasks.py
-COPY reports/ reports/
 
 # Install the package
 RUN pip install . --no-deps --no-cache-dir
@@ -42,4 +40,4 @@ RUN pip install . --no-deps --no-cache-dir
 COPY data/ data/
 
 # Set the entrypoint with memory optimization flags
-ENTRYPOINT ["python", "-X", "faulthandler", "-u", "src/project_mlops/train.py"]
+ENTRYPOINT ["python", "-X", "faulthandler", "-u", "src/playing_cards/train.py"]
